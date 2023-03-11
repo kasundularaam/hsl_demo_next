@@ -1,6 +1,3 @@
-import Image from "next/image";
-import userImg from "../../public/user.avif";
-
 interface User {
   name: string;
   email: string;
@@ -17,8 +14,9 @@ export default async function Users() {
   const users = await getUsers();
 
   return (
-    <div className="bg-gray-800 h-screen text-gray-200 flex flex-col gap-3">
-      <div>Users</div>
+    <div className="bg-gray-800 h-screen text-gray-300 flex flex-col gap-5 pt-5">
+      <h1 className="text-green-500 text-center font-bold text-3xl">Users</h1>
+      <hr />
       <div>
         {users.map((user) => {
           return <UserCard key={user.email} user={user} />;
@@ -31,7 +29,7 @@ export default async function Users() {
 const UserCard = (props: { user: User }) => {
   const user = props.user;
   return (
-    <div className="flex flex-col p-3 bg-gray-700 rounded-md mb-2 mx-5">
+    <div className="flex flex-col p-3 bg-gray-700 rounded-md mb-2 mx-5 border-gray-500 border">
       <p>{user.name ?? "No Name"}</p>
       <p>{user.email}</p>
     </div>
