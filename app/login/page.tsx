@@ -1,44 +1,34 @@
 "use client";
-import axios from "axios";
+
 import { ErrorMessage, Field, Form, Formik } from "formik";
 
 import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 import * as Yup from "yup";
-
-interface FormData {
-  email: string;
-  password: string;
-}
+import { loginUser } from "@/services/auth_service";
+import { LoginData } from "@/models/form_data";
 
 export default function LoginPage() {
-  const [user, setUser] = useState({});
+  const [error, setError] = useState("");
 
   const router = useRouter();
 
-  const login = async (formData: FormData) => {
-    const { email, password } = formData;
-    console.log(email, password);
-
+  const login = async (formData: LoginData) => {
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/users/login", {
-        email: email,
-        password: password,
-      });
-      setUser(res.data);
+      const user = await loginUser(formData);
       if (user) {
         router.push("/");
       }
     } catch (error) {
-      console.log(error);
+      setError(`${error}`);
     }
   };
 
   return (
     <div className="flex flex-col h-screen bg-gray-800 p-5 gap-5 text-gray-300">
       <h1 className="text-green-500 text-center font-bold text-3xl">Login</h1>
-      <div className="flex flex-col m-auto bg-slate-700 p-20 rounded-lg">
+      <div className="flex flex-col m-auto bg-slate-700 p-5 rounded-lg">
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={Yup.object({
@@ -48,22 +38,46 @@ export default function LoginPage() {
             password: Yup.string().required("Required"),
           })}
           onSubmit={(values) => {
-            login(values as FormData);
+            login(values as LoginData);
           }}
         >
-          <div className="flex flex-col m-auto bg-slate-700 p-20 rounded-lg">
-            <Form className="flex flex-col m-auto p-7">
+          <Form className="flex flex-col gap-5 m-auto">
+            <div className="flex flex-col gap-2">
               <label htmlFor="email">Email</label>
-              <Field name="email" type="email" />
-              <ErrorMessage name="email" />
+              <Field
+                name="email"
+                type="email"
+                className="bg-gray-600 rounded-md px-5 py-2 border-0"
+              />
+              <div className="text-xs text-red-500">
+                <ErrorMessage name="email" />
+              </div>
+            </div>
 
+            <div className="flex flex-col gap-2">
               <label htmlFor="password">Password</label>
-              <Field name="password" type="password" />
-              <ErrorMessage name="password" />
+              <Field
+                name="password"
+                type="password"
+                className="bg-gray-600 rounded-md px-5 py-2"
+              />
+              <div className="text-xs text-red-500">
+                <ErrorMessage name="password" />
+              </div>
+            </div>
 
-              <button type="submit">Submit</button>
-            </Form>
-          </div>
+            <button
+              type="submit"
+              className="rounded-md bg-green-500 p-2 text-white font-bold"
+            >
+              Submit
+            </button>
+            {error ? (
+              <div className="text-xs text-red-500 text-center">{error}</div>
+            ) : (
+              <div></div>
+            )}
+          </Form>
         </Formik>
       </div>
     </div>

@@ -1,78 +1,99 @@
 "use client";
 
-import axios from "axios";
+import { RegisterData } from "@/models/form_data";
+import { registerUser } from "@/services/auth_service";
+import axios, { AxiosError } from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import * as Yup from "yup";
 
-interface FormData {
-  name: string;
-  email: string;
-  password: string;
-}
-
 export default function RegisterPage() {
-  const [user, setUser] = useState({});
+  const [error, setError] = useState("");
 
   const router = useRouter();
 
-  const register = async (formData: FormData) => {
-    const { name, email, password } = formData;
-
+  const register = async (formData: RegisterData) => {
     try {
-      const res = await axios.post(
-        "http://localhost:8000/api/v1/users/register",
-        {
-          name: name,
-          email: email,
-          password: password,
-        }
-      );
-
-      setUser(res.data);
-
+      const user = await registerUser(formData);
       if (user) {
         router.push("/");
       }
     } catch (error) {
-      console.log(error);
+      setError(`${error}`);
     }
   };
 
   return (
-    <div className="h-screen bg-gray-800 text-gray-300">
-      <Formik
-        initialValues={{ name: "", email: "", password: "" }}
-        validationSchema={Yup.object({
-          name: Yup.string().required("Required"),
-          email: Yup.string()
-            .email("Invalid email address")
-            .required("Required"),
-          password: Yup.string().required("Required"),
-        })}
-        onSubmit={(values) => {
-          register(values as FormData);
-        }}
-      >
-        <div className="flex flex-col m-auto bg-slate-700 p-20 rounded-lg">
-          <Form className="flex flex-col m-auto p-7">
-            <label htmlFor="name">Name</label>
-            <Field name="name" type="text" />
-            <ErrorMessage name="name" />
+    <div className="flex flex-col h-screen bg-gray-800 p-5 gap-5 text-gray-300">
+      <h1 className="text-green-500 text-center font-bold text-3xl">
+        Register
+      </h1>
+      <div className="flex flex-col m-auto bg-slate-700 p-5 rounded-lg">
+        <Formik
+          initialValues={{ name: "", email: "", password: "" }}
+          validationSchema={Yup.object({
+            name: Yup.string().required("Required"),
+            email: Yup.string()
+              .email("Invalid email address")
+              .required("Required"),
+            password: Yup.string().required("Required"),
+          })}
+          onSubmit={(values) => {
+            register(values as RegisterData);
+          }}
+        >
+          <Form className="flex flex-col gap-5 m-auto">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="name">Name</label>
+              <Field
+                name="name"
+                type="text"
+                className="bg-gray-600 rounded-md px-5 py-2 border-0"
+              />
+              <div className="text-xs text-red-500">
+                <ErrorMessage name="name" />
+              </div>
+            </div>
 
-            <label htmlFor="email">Email</label>
-            <Field name="email" type="email" />
-            <ErrorMessage name="email" />
+            <div className="flex flex-col gap-2">
+              <label htmlFor="email">Email</label>
+              <Field
+                name="email"
+                type="email"
+                className="bg-gray-600 rounded-md px-5 py-2 border-0"
+              />
+              <div className="text-xs text-red-500">
+                <ErrorMessage name="email" />
+              </div>
+            </div>
 
-            <label htmlFor="password">Password</label>
-            <Field name="password" type="password" />
-            <ErrorMessage name="password" />
+            <div className="flex flex-col gap-2">
+              <label htmlFor="password">Password</label>
+              <Field
+                name="password"
+                type="password"
+                className="bg-gray-600 rounded-md px-5 py-2 border-0"
+              />
+              <div className="text-xs text-red-500">
+                <ErrorMessage name="password" />
+              </div>
+            </div>
 
-            <button type="submit">Submit</button>
+            <button
+              type="submit"
+              className="rounded-md bg-green-500 p-2 text-white font-bold"
+            >
+              Submit
+            </button>
+            {error ? (
+              <div className="text-xs text-red-500 text-center">{error}</div>
+            ) : (
+              <div></div>
+            )}
           </Form>
-        </div>
-      </Formik>
+        </Formik>
+      </div>
     </div>
   );
 }

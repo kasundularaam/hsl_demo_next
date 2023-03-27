@@ -13,7 +13,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <nav className="flex flex-row justify-between px-5 py-2">
+          <Link href="/">Handicraft Sri Lanka</Link>
+          <div className="flex flex-row gap-2">
+            <Link href="/users">Users</Link>
+            <Link href="/login">Login</Link>
+            <Link href="/register">Register</Link>
+          </div>
+        </nav>
+        {children}
+      </body>
     </html>
   );
 }

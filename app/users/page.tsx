@@ -16,7 +16,6 @@ export default async function Users() {
   return (
     <div className="bg-gray-800 h-screen text-gray-300 flex flex-col gap-5 pt-5">
       <h1 className="text-green-500 text-center font-bold text-3xl">Users</h1>
-      <hr />
       <div>
         {users.map((user) => {
           return <UserCard key={user.email} user={user} />;
