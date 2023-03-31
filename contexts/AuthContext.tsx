@@ -1,13 +1,13 @@
 "use client";
 
-import User from "@/models/user";
+import IUser from "@/models/IUser";
 import { getUid, getUserByUid, isSignedIn } from "@/services/auth_service";
 import React, { useContext, useEffect, useState } from "react";
 
-const AuthContext = React.createContext<User | undefined>(undefined);
+const AuthContext = React.createContext<IUser | undefined>(undefined);
 const AuthUpdateAuthStateContext = React.createContext<
-  (value: User | undefined) => void
->((value: User | undefined) => {});
+  (value: IUser | undefined) => void
+>((value: IUser | undefined) => {});
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -18,8 +18,8 @@ export function useUpdateAuthState() {
 }
 
 export default function AuthProvider({ children }: any) {
-  const [user, setUser] = useState<User | undefined>(undefined);
-  const updateAuthState = (value: User | undefined) => {
+  const [user, setUser] = useState<IUser | undefined>(undefined);
+  const updateAuthState = (value: IUser | undefined) => {
     setUser(value);
   };
 

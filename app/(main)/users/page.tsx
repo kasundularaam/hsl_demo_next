@@ -1,13 +1,10 @@
-interface User {
-  name: string;
-  email: string;
-  password: string;
-}
+import IUser from "@/models/IUser";
+import UserCard from "./(components)/UserCard";
 
 const getUsers = async () => {
   const res = await fetch("http://localhost:8000/api/v1/users");
   const data = await res.json();
-  return data as User[];
+  return data as IUser[];
 };
 
 export default async function Users() {
@@ -24,13 +21,3 @@ export default async function Users() {
     </div>
   );
 }
-
-const UserCard = (props: { user: User }) => {
-  const user = props.user;
-  return (
-    <div className="flex flex-col p-3 bg-gray-700 rounded-md mb-2 mx-5 border-gray-500 border">
-      <p>{user.name ?? "No Name"}</p>
-      <p>{user.email}</p>
-    </div>
-  );
-};
