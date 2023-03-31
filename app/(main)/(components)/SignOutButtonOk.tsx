@@ -1,19 +1,16 @@
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
+import { AuthLogics } from "@/logic/authLogics";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-export default function SignOutButton() {
-  const contextValue = useAuth();
-  if (contextValue === undefined) {
-    return null;
-  }
-
-  const { useIsSignedIn, useSignOut } = contextValue;
+export default function SignOutButtonOk(authLogics: AuthLogics) {
+  const { useIsSignedIn, useSignOut } = authLogics;
 
   const isSignedIn = useIsSignedIn();
+  const isSignedOut = useSignOut();
 
   const router = useRouter();
   const signOut = () => {

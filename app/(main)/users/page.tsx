@@ -1,10 +1,10 @@
-import IUser from "@/models/IUser";
+import { User } from "@/models/User";
 import UserCard from "./(components)/UserCard";
 
 const getUsers = async () => {
   const res = await fetch("http://localhost:8000/api/v1/users");
   const data = await res.json();
-  return data as IUser[];
+  return data as User[];
 };
 
 export default async function Users() {

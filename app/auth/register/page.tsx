@@ -1,13 +1,13 @@
 "use client";
 
 import { useUpdateAuthState } from "@/contexts/AuthContext";
-import { RegisterData } from "@/models/form_data";
-import { registerUser } from "@/services/auth_service";
+import { registerUser } from "@/services/authService";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import * as Yup from "yup";
+import { RegisterData } from "../(componentProps)/FormDataProps";
 
 export default function RegisterPage() {
   const [error, setError] = useState("");

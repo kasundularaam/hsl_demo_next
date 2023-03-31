@@ -1,49 +1,32 @@
 "use client";
 
-import IUser from "@/models/IUser";
-import { getUid, getUserByUid, isSignedIn } from "@/services/auth_service";
+import createAuthLogics, { AuthLogics } from "@/logic/authLogics";
+import AuthRepo from "@/repositories/AuthRepo";
+import AuthService from "@/services/AuthService";
 import React, { useContext, useEffect, useState } from "react";
 
-const AuthContext = React.createContext<IUser | undefined>(undefined);
-const AuthUpdateAuthStateContext = React.createContext<
-  (value: IUser | undefined) => void
->((value: IUser | undefined) => {});
+let AuthContext = React.createContext<AuthLogics | undefined>(undefined);
 
 export function useAuth() {
   return useContext(AuthContext);
 }
 
-export function useUpdateAuthState() {
-  return useContext(AuthUpdateAuthStateContext);
-}
-
-export default function AuthProvider({ children }: any) {
-  const [user, setUser] = useState<IUser | undefined>(undefined);
-  const updateAuthState = (value: IUser | undefined) => {
-    setUser(value);
-  };
-
+export default function AuthProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [authLogicHooks, setAuthLogicHooks] = useState<AuthLogics>();
   useEffect(() => {
-    const update = async () => {
-      const hasUser = isSignedIn();
-      if (hasUser) {
-        try {
-          const uid = getUid();
-          const user = await getUserByUid(uid);
-          updateAuthState(user);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    };
-    update();
+    const authService = new AuthService();
+    const authRepo = new AuthRepo(authService);
+    const authLogics = createAuthLogics(authRepo);
+    setAuthLogicHooks(authLogics);
   }, []);
 
   return (
-    <AuthContext.Provider value={user}>
-      <AuthUpdateAuthStateContext.Provider value={updateAuthState}>
-        {children}
-      </AuthUpdateAuthStateContext.Provider>
+    <AuthContext.Provider value={authLogicHooks}>
+      {children}
     </AuthContext.Provider>
   );
 }

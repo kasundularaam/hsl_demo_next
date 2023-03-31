@@ -1,5 +1,6 @@
 "use client";
-import { isSignedIn } from "@/services/auth_service";
+
+import { isSignedIn } from "@/services/authService";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 

@@ -1,10 +1,10 @@
-export interface RegisterData {
+export type RegisterData = {
   name: string;
   email: string;
   password: string;
-}
+};
 
-export interface LoginData {
+export type LoginData = {
   email: string;
   password: string;
-}
+};

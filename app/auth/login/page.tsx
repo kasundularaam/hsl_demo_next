@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 import * as Yup from "yup";
-import { loginUser } from "@/services/auth_service";
-import { LoginData } from "@/models/form_data";
 import Link from "next/link";
 import { useUpdateAuthState } from "@/contexts/AuthContext";
+import { LoginData } from "../(componentProps)/FormDataProps";
+import { loginUser } from "@/services/authService";
 
 export default function LoginPage() {
   const [error, setError] = useState("");
