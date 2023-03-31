@@ -1,5 +1,5 @@
-import "./globals.css";
 import AuthProvider from "@/contexts/AuthContext";
+import NavBar from "./(components)/navbar";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,7 +14,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <NavBar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

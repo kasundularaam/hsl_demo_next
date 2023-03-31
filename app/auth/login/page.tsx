@@ -1,22 +1,27 @@
 "use client";
 
-import { RegisterData } from "@/models/form_data";
-import { registerUser } from "@/services/auth_service";
-import axios, { AxiosError } from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
+
 import { useRouter } from "next/navigation";
+
 import { useState } from "react";
 import * as Yup from "yup";
+import { loginUser } from "@/services/auth_service";
+import { LoginData } from "@/models/form_data";
+import Link from "next/link";
+import { useUpdateAuthState } from "@/contexts/AuthContext";
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const [error, setError] = useState("");
+  const updateAuthState = useUpdateAuthState();
 
   const router = useRouter();
 
-  const register = async (formData: RegisterData) => {
+  const login = async (formData: LoginData) => {
     try {
-      const user = await registerUser(formData);
+      const user = await loginUser(formData);
       if (user) {
+        updateAuthState(user);
         router.push("/");
       }
     } catch (error) {
@@ -26,36 +31,21 @@ export default function RegisterPage() {
 
   return (
     <div className="flex flex-col h-screen bg-gray-800 p-5 gap-5 text-gray-300">
-      <h1 className="text-green-500 text-center font-bold text-3xl">
-        Register
-      </h1>
+      <h1 className="text-green-500 text-center font-bold text-3xl">Login</h1>
       <div className="flex flex-col m-auto bg-slate-700 p-5 rounded-lg">
         <Formik
-          initialValues={{ name: "", email: "", password: "" }}
+          initialValues={{ email: "", password: "" }}
           validationSchema={Yup.object({
-            name: Yup.string().required("Required"),
             email: Yup.string()
               .email("Invalid email address")
               .required("Required"),
             password: Yup.string().required("Required"),
           })}
           onSubmit={(values) => {
-            register(values as RegisterData);
+            login(values as LoginData);
           }}
         >
           <Form className="flex flex-col gap-5 m-auto">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="name">Name</label>
-              <Field
-                name="name"
-                type="text"
-                className="bg-gray-600 rounded-md px-5 py-2 border-0"
-              />
-              <div className="text-xs text-red-500">
-                <ErrorMessage name="name" />
-              </div>
-            </div>
-
             <div className="flex flex-col gap-2">
               <label htmlFor="email">Email</label>
               <Field
@@ -73,7 +63,7 @@ export default function RegisterPage() {
               <Field
                 name="password"
                 type="password"
-                className="bg-gray-600 rounded-md px-5 py-2 border-0"
+                className="bg-gray-600 rounded-md px-5 py-2"
               />
               <div className="text-xs text-red-500">
                 <ErrorMessage name="password" />
@@ -93,6 +83,9 @@ export default function RegisterPage() {
             )}
           </Form>
         </Formik>
+        <Link href="/auth/register" className="text-center">
+          Register
+        </Link>
       </div>
     </div>
   );

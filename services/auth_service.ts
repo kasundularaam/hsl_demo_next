@@ -1,7 +1,8 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import User from "@/models/user";
 import { parseCookies, setCookie, destroyCookie } from "nookies";
 import { LoginData, RegisterData } from "@/models/form_data";
+import { log } from "console";
 
 const url = "http://localhost:8000/api/v1/users";
 
@@ -15,8 +16,7 @@ export const loginUser = async (loginData: LoginData) => {
     });
     const { token } = res.data;
     const user = extractUser(res);
-    saveAuthToken(token);
-    saveUid(user._id);
+    saveUser(token, user._id);
     return user;
   } catch (error) {
     handleError(error);
@@ -32,22 +32,26 @@ export const registerUser = async (registerData: RegisterData) => {
       email: email,
       password: password,
     });
-    const { token } = res.data;
 
+    if (res.status != 201) {
+      handleError(res.data);
+    }
+
+    const { token } = res.data;
     const user = extractUser(res);
-    saveAuthToken(token);
-    saveUid(user._id);
+    saveUser(token, user._id);
     return user;
   } catch (error) {
     handleError(error);
   }
 };
 
-const signOutUser = () => {
-  destroyCookie(null, "auth-token");
+export const signOutUser = () => {
+  destroyCookie(null, "authToken");
+  destroyCookie(null, "uid");
 };
 
-const isSignIn = () => {
+export const isSignedIn = () => {
   const token = getAuthToken();
   if (token) {
     return true;
@@ -55,23 +59,28 @@ const isSignIn = () => {
   return false;
 };
 
-const getUserByUid = async (uid: string) => {
+export const getUserByUid = async (uid: string) => {
   try {
-    const res = await axios.get(url);
-    const user = extractUser(res);
+    const res = await axios.get(`${url}/${uid}`);
+    const user = res.data;
     return user;
   } catch (error) {
     handleError(error);
   }
+};
+export const getUid = () => {
+  const token = parseCookies().uid;
+  return token;
 };
 
 const getAuthToken = () => {
   const token = parseCookies().authToken;
   return token;
 };
-const getUid = () => {
-  const token = parseCookies().uid;
-  return token;
+
+const saveUser = (token: string, uid: string) => {
+  saveAuthToken(token);
+  saveUid(uid);
 };
 
 const saveAuthToken = (token: string) => {
@@ -88,15 +97,15 @@ const saveUid = (uid: string) => {
   });
 };
 
-const extractUser = (res: any) => {
+const extractUser = (res: AxiosResponse) => {
   const user: User = res.data.user;
   return user;
 };
 
 const handleError = (error: any) => {
   if (error instanceof AxiosError) {
-    const { msg } = error.response?.data;
-    throw msg;
+    const msg = error.message;
+    throw `ERROR: ${msg}`;
   } else {
     throw `ERROR: ${error}`;
   }
