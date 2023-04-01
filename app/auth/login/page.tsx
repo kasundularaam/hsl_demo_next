@@ -4,30 +4,37 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 
 import { useRouter } from "next/navigation";
 
-import { useState } from "react";
 import * as Yup from "yup";
 import Link from "next/link";
 import { LoginData } from "../(componentProps)/FormDataProps";
-import { useAuth } from "@/contexts/auth/AuthContext";
+import { useLogin } from "@/contexts/loginContext/LoginContext";
+import {
+  LoginFailedState,
+  LoginLoadingState,
+  LoginSucceedState,
+} from "@/contexts/loginContext/LoginState";
+import { useAuthStatus } from "@/contexts/authStatus/AuthStatusContext";
+import { AuthStatusAuthorizedState } from "@/contexts/authStatus/AuthStatusState";
 
 export default function LoginPage() {
-  const { useLogin } = useAuth()!;
+  const { state, loginUser } = useLogin();
+  const { updateAuthStatus } = useAuthStatus();
 
   const router = useRouter();
 
-  const { isLoading, data, error } = useLogin();
-
-  const login = async (formData: LoginData) => {
-    try {
-      const user = await loginUser(formData);
-      if (user) {
-        updateAuthState(user);
-        router.push("/");
-      }
-    } catch (error) {
-      setError(`${error}`);
+  function login(data: LoginData) {
+    if (loginUser === undefined) {
+      return;
     }
-  };
+    loginUser(data.email, data.password);
+  }
+  if (state instanceof LoginSucceedState) {
+    if (updateAuthStatus === undefined) {
+      return;
+    }
+    updateAuthStatus(new AuthStatusAuthorizedState());
+    router.replace("/");
+  }
 
   return (
     <div className="flex flex-col h-screen bg-gray-800 p-5 gap-5 text-gray-300">
@@ -69,17 +76,20 @@ export default function LoginPage() {
                 <ErrorMessage name="password" />
               </div>
             </div>
-
-            <button
-              type="submit"
-              className="rounded-md bg-green-500 p-2 text-white font-bold"
-            >
-              Submit
-            </button>
-            {error ? (
-              <div className="text-xs text-red-500 text-center">{error}</div>
+            {state instanceof LoginLoadingState ? (
+              <div>Loading... </div>
             ) : (
-              <div></div>
+              <button
+                type="submit"
+                className="rounded-md bg-green-500 p-2 text-white font-bold"
+              >
+                Submit
+              </button>
+            )}
+            {state instanceof LoginFailedState && (
+              <div className="text-xs text-red-500 text-center">
+                {state.errorMessage}
+              </div>
             )}
           </Form>
         </Formik>

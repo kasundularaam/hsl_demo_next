@@ -1,17 +1,22 @@
+"use client";
+
 import IAuthRepo from "@/domain/auth/IAuthRepo";
 import AuthRepo from "@/repositories/AuthRepo";
 import AuthService from "@/services/AuthService";
 import React, { useContext, useEffect, useState } from "react";
+
+export enum ENVIRONMENT {
+  DEV = "development",
+  PROD = "production",
+  TEST = "testing",
+}
+
+const env = ENVIRONMENT.DEV;
+
 const InjectionContext = React.createContext<any>({});
 
 export function useInjection() {
   return useContext(InjectionContext);
-}
-
-enum ENVIRONMENT {
-  DEV = "development",
-  PROD = "production",
-  TEST = "testing",
 }
 
 type Dependencies = {
@@ -19,8 +24,7 @@ type Dependencies = {
 };
 
 function getDevDependencies(): Dependencies {
-  const authService = new AuthService();
-  const authRepo = new AuthRepo(authService);
+  const authRepo = new AuthRepo(new AuthService());
   return { authRepo: authRepo };
 }
 
@@ -34,12 +38,16 @@ function mapDependencies(
   }
 }
 
-export default function Injection({ children }: { children: React.ReactNode }) {
+export default function InjectionProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [dependencies, setDependencies] = useState<Dependencies>(
     getDevDependencies()
   );
   useEffect(() => {
-    mapDependencies(ENVIRONMENT.DEV, setDependencies);
+    mapDependencies(env, setDependencies);
   }, []);
   return (
     <InjectionContext.Provider value={dependencies}>

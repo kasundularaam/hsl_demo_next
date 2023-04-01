@@ -1,7 +1,5 @@
 "use client";
 
-import { useUpdateAuthState } from "@/contexts/auth/AuthContext";
-import { registerUser } from "@/services/authService";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,21 +10,7 @@ import { RegisterData } from "../(componentProps)/FormDataProps";
 export default function RegisterPage() {
   const [error, setError] = useState("");
 
-  const updateAuthState = useUpdateAuthState();
-
-  const router = useRouter();
-
-  const register = async (formData: RegisterData) => {
-    try {
-      const user = await registerUser(formData);
-      if (user) {
-        updateAuthState(user);
-        router.push("/");
-      }
-    } catch (error) {
-      setError(`${error}`);
-    }
-  };
+  const register = async (formData: RegisterData) => {};
 
   return (
     <div className="flex flex-col h-screen bg-gray-800 p-5 gap-5 text-gray-300">

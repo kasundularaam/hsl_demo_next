@@ -1,14 +1,16 @@
 "use client";
 
-import { isSignedIn } from "@/services/authService";
+import { useAuthStatus } from "@/contexts/authStatus/AuthStatusContext";
+import { AuthStatusAuthorizedState } from "@/contexts/authStatus/AuthStatusState";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Home() {
+  const { state } = useAuthStatus();
   const router = useRouter();
   useEffect(() => {
     setTimeout(() => {
-      if (isSignedIn()) {
+      if (state instanceof AuthStatusAuthorizedState) {
         router.replace("/home");
       } else {
         router.replace("/auth/login");

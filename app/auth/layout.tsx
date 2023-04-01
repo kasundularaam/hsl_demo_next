@@ -1,3 +1,5 @@
+import LoginProvider from "@/contexts/loginContext/LoginContext";
+
 export const metadata = {
   title: "Authentication",
   description: "Register or login before continue",
@@ -8,5 +10,9 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <LoginProvider>{children}</LoginProvider>
+    </>
+  );
 }

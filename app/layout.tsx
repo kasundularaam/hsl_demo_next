@@ -1,5 +1,6 @@
 import "./globals.css";
-import AuthProvider from "@/contexts/auth/AuthContext";
+import InjectionProvider, { ENVIRONMENT } from "@/injection/Injection";
+import AuthStatusProvider from "@/contexts/authStatus/AuthStatusContext";
 
 export const metadata = {
   title: "Create Next App",
@@ -14,7 +15,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <InjectionProvider>
+          <AuthStatusProvider>{children}</AuthStatusProvider>
+        </InjectionProvider>
       </body>
     </html>
   );

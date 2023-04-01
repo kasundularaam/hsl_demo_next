@@ -1,7 +1,8 @@
 "use client";
 
 import { useInjection } from "@/injection/Injection";
-import React, { useContext, useReducer } from "react";
+import createLoginLogic from "@/logic/loginLogic";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import LoginAction, {
   LoginFailedAction,
   LoginStartedAction,
@@ -16,12 +17,12 @@ import LoginState, {
 
 type LoginContextType = {
   state: LoginState;
-  dispatch: React.Dispatch<LoginAction> | undefined;
+  loginUser: ((email: string, password: string) => Promise<void>) | undefined;
 };
 
 const LoginContext = React.createContext<LoginContextType>({
   state: new LoginInitState(),
-  dispatch: undefined,
+  loginUser: undefined,
 });
 
 function reducer(state: LoginState, action: LoginAction) {
@@ -47,11 +48,18 @@ export default function LoginProvider({
   children: React.ReactNode;
 }) {
   const [state, dispatch] = useReducer(reducer, new LoginInitState());
+  const [loginUser, setLoginUser] =
+    useState<(email: string, password: string) => Promise<void>>();
 
   const { authRepo } = useInjection();
 
+  useEffect(() => {
+    const logic = createLoginLogic(authRepo, dispatch);
+    setLoginUser(logic);
+  }, [authRepo]);
+
   return (
-    <LoginContext.Provider value={{ state, dispatch }}>
+    <LoginContext.Provider value={{ state, loginUser }}>
       {children}
     </LoginContext.Provider>
   );
