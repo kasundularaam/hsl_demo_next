@@ -8,7 +8,7 @@ import { useState } from "react";
 import * as Yup from "yup";
 import Link from "next/link";
 import { LoginData } from "../(componentProps)/FormDataProps";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/auth/AuthContext";
 
 export default function LoginPage() {
   const { useLogin } = useAuth()!;

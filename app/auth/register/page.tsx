@@ -1,6 +1,6 @@
 "use client";
 
-import { useUpdateAuthState } from "@/contexts/AuthContext";
+import { useUpdateAuthState } from "@/contexts/auth/AuthContext";
 import { registerUser } from "@/services/authService";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Link from "next/link";
