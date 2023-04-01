@@ -2,7 +2,7 @@
 
 import { useInjection } from "@/injection/Injection";
 import createAuthStatusLogic from "@/logic/authStatusLogic";
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import AuthStatusAction, {
   AuthStatusAuthorizeAction,
   AuthStatusUnauthorizeAction,
@@ -42,19 +42,18 @@ export default function AuthStatusProvider({
   children: React.ReactNode;
 }) {
   const [state, dispatch] = useReducer(reducer, false);
-  const [updateAuthStatus, setUpdateAuthStatus] =
-    useState<(status: AuthStatusState) => void>();
 
   const { authRepo } = useInjection();
+
+  const updateAuthStatus = createAuthStatusLogic(dispatch);
 
   useEffect(() => {
     const isSignedIn = authRepo.isSignedIn();
     if (isSignedIn) {
-      dispatch(new AuthStatusAuthorizedState());
+      dispatch(new AuthStatusAuthorizeAction());
     }
-    const logic = createAuthStatusLogic(dispatch);
-    setUpdateAuthStatus(logic);
-  }, [authRepo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <AuthStatusContext.Provider value={{ state, updateAuthStatus }}>

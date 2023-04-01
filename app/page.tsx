@@ -1,7 +1,10 @@
 "use client";
 
 import { useAuthStatus } from "@/contexts/authStatus/AuthStatusContext";
-import { AuthStatusAuthorizedState } from "@/contexts/authStatus/AuthStatusState";
+import {
+  AuthStatusAuthorizedState,
+  AuthStatusUnauthorizedState,
+} from "@/contexts/authStatus/AuthStatusState";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -12,7 +15,8 @@ export default function Home() {
     setTimeout(() => {
       if (state instanceof AuthStatusAuthorizedState) {
         router.replace("/home");
-      } else {
+      }
+      if (state instanceof AuthStatusUnauthorizedState) {
         router.replace("/auth/login");
       }
     }, 2000);

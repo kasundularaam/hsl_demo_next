@@ -14,26 +14,30 @@ import {
   LoginSucceedState,
 } from "@/contexts/loginContext/LoginState";
 import { useAuthStatus } from "@/contexts/authStatus/AuthStatusContext";
-import { AuthStatusAuthorizedState } from "@/contexts/authStatus/AuthStatusState";
+import { useEffect } from "react";
+import { AuthStatusAuthorizeAction } from "@/contexts/authStatus/AuthStatusAction";
 
 export default function LoginPage() {
   const { state, loginUser } = useLogin();
   const { updateAuthStatus } = useAuthStatus();
 
   const router = useRouter();
+  useEffect(() => {
+    if (state instanceof LoginSucceedState) {
+      if (updateAuthStatus === undefined) {
+        return;
+      }
+      updateAuthStatus(new AuthStatusAuthorizeAction());
+      router.replace("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
 
   function login(data: LoginData) {
     if (loginUser === undefined) {
       return;
     }
     loginUser(data.email, data.password);
-  }
-  if (state instanceof LoginSucceedState) {
-    if (updateAuthStatus === undefined) {
-      return;
-    }
-    updateAuthStatus(new AuthStatusAuthorizedState());
-    router.replace("/");
   }
 
   return (

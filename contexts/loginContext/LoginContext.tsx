@@ -2,7 +2,7 @@
 
 import { useInjection } from "@/injection/Injection";
 import createLoginLogic from "@/logic/loginLogic";
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useReducer } from "react";
 import LoginAction, {
   LoginFailedAction,
   LoginStartedAction,
@@ -48,15 +48,10 @@ export default function LoginProvider({
   children: React.ReactNode;
 }) {
   const [state, dispatch] = useReducer(reducer, new LoginInitState());
-  const [loginUser, setLoginUser] =
-    useState<(email: string, password: string) => Promise<void>>();
 
   const { authRepo } = useInjection();
 
-  useEffect(() => {
-    const logic = createLoginLogic(authRepo, dispatch);
-    setLoginUser(logic);
-  }, [authRepo]);
+  const loginUser = createLoginLogic(authRepo, dispatch);
 
   return (
     <LoginContext.Provider value={{ state, loginUser }}>
