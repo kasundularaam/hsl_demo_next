@@ -6,26 +6,19 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function SignOutButton() {
-  const contextValue = useAuth();
-  if (contextValue === undefined) {
-    return null;
-  }
-
-  const { useIsSignedIn, useSignOut } = contextValue;
+  const { useIsSignedIn, useSignOut } = useAuth()!;
 
   const isSignedIn = useIsSignedIn();
+  const signOutUser = useSignOut();
 
   const router = useRouter();
   const signOut = () => {
-    try {
-      router.replace("/");
-    } catch (error) {
-      console.log(error);
-    }
+    signOutUser();
+    router.replace("/");
   };
   return (
     <>
-      {user ? (
+      {isSignedIn ? (
         <button onClick={signOut}>Sign Out</button>
       ) : (
         <Link href="/auth/login">Login</Link>

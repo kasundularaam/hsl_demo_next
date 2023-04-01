@@ -1,4 +1,4 @@
-import { User } from "@/models/User";
+import { User } from "@/domain/auth/User";
 import UserCard from "./(components)/UserCard";
 
 const getUsers = async () => {

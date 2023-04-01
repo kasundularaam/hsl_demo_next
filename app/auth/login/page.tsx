@@ -7,15 +7,15 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import * as Yup from "yup";
 import Link from "next/link";
-import { useUpdateAuthState } from "@/contexts/AuthContext";
 import { LoginData } from "../(componentProps)/FormDataProps";
-import { loginUser } from "@/services/authService";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function LoginPage() {
-  const [error, setError] = useState("");
-  const updateAuthState = useUpdateAuthState();
+  const { useLogin } = useAuth()!;
 
   const router = useRouter();
+
+  const { isLoading, data, error } = useLogin();
 
   const login = async (formData: LoginData) => {
     try {

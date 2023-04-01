@@ -27,13 +27,10 @@ export type AuthLogics = {
     error: Error | undefined;
   };
 
-  useSignOut: () => {
-    isSignedOut: Boolean;
-  };
+  useSignOut: () => () => void;
 
-  useIsSignedIn: () => {
-    isSignedIn: Boolean;
-  };
+  useIsSignedIn: () => Boolean;
+  useGetUid: () => string | undefined;
 };
 
 export default function createAuthLogics(authRepo: IAuthRepo): AuthLogics {
@@ -88,15 +85,11 @@ export default function createAuthLogics(authRepo: IAuthRepo): AuthLogics {
     return { isLoading, data, error };
   }
 
-  function useSignOut() {
-    const [isSignedOut, setIsSignedOut] = useState<Boolean>(false);
-
-    useEffect(() => {
+  function useSignOut(): () => void {
+    function signOutUser() {
       authRepo.signOutUser();
-      setIsSignedOut(true);
-    }, []);
-
-    return { isSignedOut };
+    }
+    return signOutUser;
   }
 
   function useIsSignedIn() {
@@ -107,8 +100,26 @@ export default function createAuthLogics(authRepo: IAuthRepo): AuthLogics {
       setIsSignedIn(res);
     }, []);
 
-    return { isSignedIn };
+    return isSignedIn;
   }
 
-  return { useLogin, useRegister, useGetUser, useSignOut, useIsSignedIn };
+  function useGetUid() {
+    const [uid, setUid] = useState<string>();
+
+    useEffect(() => {
+      const res = authRepo.getUid();
+      setUid(res);
+    }, []);
+
+    return uid;
+  }
+
+  return {
+    useLogin,
+    useRegister,
+    useGetUser,
+    useSignOut,
+    useIsSignedIn,
+    useGetUid,
+  };
 }

@@ -1,4 +1,4 @@
-import { User } from "@/models/User";
+import { User } from "@/domain/auth/User";
 
 export type UserCardProps = {
   user: User;
