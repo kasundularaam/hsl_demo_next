@@ -43,7 +43,7 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col h-screen bg-gray-800 p-5 gap-5 text-gray-300">
       <h1 className="text-green-500 text-center font-bold text-3xl">Login</h1>
-      <div className="flex flex-col m-auto bg-slate-700 p-5 rounded-lg">
+      <div className="flex flex-col m-auto bg-slate-700 p-5 rounded-lg space-y-3">
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={Yup.object({
@@ -81,7 +81,7 @@ export default function LoginPage() {
               </div>
             </div>
             {state instanceof LoginLoadingState ? (
-              <div>Loading... </div>
+              <div className="text-center">Loading... </div>
             ) : (
               <button
                 type="submit"

@@ -1,4 +1,5 @@
 import LoginProvider from "@/contexts/loginContext/LoginContext";
+import RegisterProvider from "@/contexts/registerContext/RegisterContext";
 
 export const metadata = {
   title: "Authentication",
@@ -12,7 +13,9 @@ export default function AuthLayout({
 }) {
   return (
     <>
-      <LoginProvider>{children}</LoginProvider>
+      <LoginProvider>
+        <RegisterProvider>{children}</RegisterProvider>
+      </LoginProvider>
     </>
   );
 }

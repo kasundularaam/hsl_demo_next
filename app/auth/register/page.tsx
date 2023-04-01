@@ -1,23 +1,49 @@
 "use client";
 
+import { AuthStatusAuthorizeAction } from "@/contexts/authStatus/AuthStatusAction";
+import { useAuthStatus } from "@/contexts/authStatus/AuthStatusContext";
+import { useRegister } from "@/contexts/registerContext/RegisterContext";
+import {
+  RegisterFailedState,
+  RegisterLoadingState,
+  RegisterSucceedState,
+} from "@/contexts/registerContext/RegisterState";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect } from "react";
 import * as Yup from "yup";
 import { RegisterData } from "../(componentProps)/FormDataProps";
 
 export default function RegisterPage() {
-  const [error, setError] = useState("");
+  const { state, registerUser } = useRegister();
+  const { updateAuthStatus } = useAuthStatus();
 
-  const register = async (formData: RegisterData) => {};
+  const router = useRouter();
+  useEffect(() => {
+    if (state instanceof RegisterSucceedState) {
+      if (updateAuthStatus === undefined) {
+        return;
+      }
+      updateAuthStatus(new AuthStatusAuthorizeAction());
+      router.replace("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
+
+  function register(data: RegisterData) {
+    if (registerUser === undefined) {
+      return;
+    }
+    registerUser(data.name, data.email, data.password);
+  }
 
   return (
     <div className="flex flex-col h-screen bg-gray-800 p-5 gap-5 text-gray-300">
       <h1 className="text-green-500 text-center font-bold text-3xl">
         Register
       </h1>
-      <div className="flex flex-col m-auto bg-slate-700 p-5 rounded-lg">
+      <div className="flex flex-col m-auto bg-slate-700 p-5 rounded-lg space-y-3">
         <Formik
           initialValues={{ name: "", email: "", password: "" }}
           validationSchema={Yup.object({
@@ -67,21 +93,27 @@ export default function RegisterPage() {
                 <ErrorMessage name="password" />
               </div>
             </div>
-
-            <button
-              type="submit"
-              className="rounded-md bg-green-500 p-2 text-white font-bold"
-            >
-              Submit
-            </button>
-            {error ? (
-              <div className="text-xs text-red-500 text-center">{error}</div>
+            {state instanceof RegisterLoadingState ? (
+              <div className="text-center">Loading...</div>
             ) : (
-              <div></div>
+              <button
+                type="submit"
+                className="rounded-md bg-green-500 p-2 text-white font-bold"
+              >
+                Submit
+              </button>
+            )}
+            {state instanceof RegisterFailedState && (
+              <div className="text-xs text-red-500 text-center">
+                {state.errorMessage}
+              </div>
             )}
           </Form>
         </Formik>
-        <Link href="/auth/login">Login</Link>
+
+        <Link href="/auth/login" className="text-center">
+          Login
+        </Link>
       </div>
     </div>
   );
