@@ -1,33 +1,29 @@
 "use client";
 
-import { AuthStatusUnauthorizeAction } from "@/contexts/authStatus/AuthStatusAction";
 import { useAuthStatus } from "@/contexts/authStatus/AuthStatusContext";
+import { AuthStatusAuthorizedState } from "@/contexts/authStatus/AuthStatusState";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 
 export default function SignOutButton() {
-  const {state, updateAuthStatus} = useAuthStatus();
+  const { state, authStatusLogic } = useAuthStatus();
 
   const router = useRouter();
 
-  const signOut = ()=>{
-    if(updateAuthStatus===undefined)return 
-    updateAuthStatus(new AuthStatusUnauthorizeAction())
-  }
-  
+  const signOut = () => {
+    if (authStatusLogic === undefined) return;
+    authStatusLogic.removeExistingUser();
+    router.replace("/");
+  };
+
   return (
-    <>
-    
-    {state instanceOf AuthStatusAuthorized ? (
-       <button onClick={()=>updateAuthStatus(new AuthStatusUnAuthorizeAction())}>Sign Out</button>
-    ):()}
-    
-      {/* {state instanceOf AuthStatusAuthorized ? (
-       
+    <div>
+      {state instanceof AuthStatusAuthorizedState ? (
+        <button onClick={signOut}>Sign Out</button>
       ) : (
         <Link href="/auth/login">Login</Link>
-      )} */}
-    </>
+      )}
+    </div>
   );
 }
