@@ -6,8 +6,8 @@ import LoginAction, {
 import IAuthRepo from "@/domain/auth/IAuthRepo";
 
 export default class LoginLogic {
-  authRepo: IAuthRepo;
-  dispatch: React.Dispatch<LoginAction>;
+  private authRepo: IAuthRepo;
+  private dispatch: React.Dispatch<LoginAction>;
 
   constructor(authRepo: IAuthRepo, dispatch: React.Dispatch<LoginAction>) {
     this.authRepo = authRepo;

@@ -5,8 +5,8 @@ import AuthStatusAction, {
 import IAuthRepo from "@/domain/auth/IAuthRepo";
 
 export default class AuthStatusLogic {
-  authRepo: IAuthRepo;
-  dispatch: React.Dispatch<AuthStatusAction>;
+  private authRepo: IAuthRepo;
+  private dispatch: React.Dispatch<AuthStatusAction>;
 
   constructor(authRepo: IAuthRepo, dispatch: React.Dispatch<AuthStatusAction>) {
     this.authRepo = authRepo;

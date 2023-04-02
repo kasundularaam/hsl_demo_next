@@ -1,6 +1,5 @@
 "use client";
 
-import { AuthStatusAuthorizeAction } from "@/contexts/authStatus/AuthStatusAction";
 import { useAuthStatus } from "@/contexts/authStatus/AuthStatusContext";
 import { useRegister } from "@/contexts/registerContext/RegisterContext";
 import {
@@ -16,26 +15,22 @@ import * as Yup from "yup";
 import { RegisterData } from "../(componentProps)/FormDataProps";
 
 export default function RegisterPage() {
-  const { state, registerUser } = useRegister();
-  const { updateAuthStatus } = useAuthStatus();
+  const { state, registerLogic } = useRegister();
+  const { authStatusLogic } = useAuthStatus();
 
   const router = useRouter();
   useEffect(() => {
     if (state instanceof RegisterSucceedState) {
-      if (updateAuthStatus === undefined) {
-        return;
-      }
-      updateAuthStatus(new AuthStatusAuthorizeAction());
+      if (authStatusLogic === undefined) return;
+      authStatusLogic.saveNewUser(state.token, state.user._id);
       router.replace("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   function register(data: RegisterData) {
-    if (registerUser === undefined) {
-      return;
-    }
-    registerUser(data.name, data.email, data.password);
+    if (registerLogic === undefined) return;
+    registerLogic.registerUser(data.name, data.email, data.password);
   }
 
   return (

@@ -6,8 +6,8 @@ import RegisterAction, {
 import IAuthRepo from "@/domain/auth/IAuthRepo";
 
 export default class RegisterLogic {
-  authRepo: IAuthRepo;
-  dispatch: React.Dispatch<RegisterAction>;
+  private authRepo: IAuthRepo;
+  private dispatch: React.Dispatch<RegisterAction>;
 
   constructor(authRepo: IAuthRepo, dispatch: React.Dispatch<RegisterAction>) {
     this.authRepo = authRepo;
