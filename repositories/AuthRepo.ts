@@ -8,6 +8,7 @@ export default class AuthRepo implements IAuthRepo {
   constructor(authService: AuthService) {
     this.authService = authService;
   }
+
   isSignedIn(): boolean {
     const isSignedIn = this.authService.isSignedIn();
     return isSignedIn;
@@ -17,50 +18,33 @@ export default class AuthRepo implements IAuthRepo {
     return uid;
   }
 
-  async loginUser(email: string, password: string): Promise<User> {
-    try {
-      const user = await this.authService.loginUser(email, password);
-      if (user) {
-        return user;
-      } else {
-        throw Error("Couldn't login");
-      }
-    } catch (error) {
-      throw error;
-    }
+  saveUser(token: string, uid: string) {
+    this.authService.saveUser(token, uid);
+  }
+
+  async loginUser(
+    email: string,
+    password: string
+  ): Promise<{ user: User; token: string }> {
+    const data = await this.authService.loginUser(email, password);
+    return data;
   }
 
   async registerUser(
     name: string,
     email: string,
     password: string
-  ): Promise<User> {
-    try {
-      const user = await this.authService.registerUser(name, email, password);
-      if (user) {
-        return user;
-      } else {
-        throw Error("Couldn't login");
-      }
-    } catch (error) {
-      throw error;
-    }
+  ): Promise<{ user: User; token: string }> {
+    const data = await this.authService.registerUser(name, email, password);
+    return data;
   }
 
   async getUserById(id: string): Promise<User> {
-    try {
-      const user = await this.authService.getUserByUid(id);
-      if (user) {
-        return user;
-      } else {
-        throw Error("Couldn't login");
-      }
-    } catch (error) {
-      throw error;
-    }
+    const user = await this.authService.getUserByUid(id);
+    return user;
   }
 
-  signOutUser(): void {
-    this.authService.signOutUser();
+  removeUser(): void {
+    this.authService.removeUser();
   }
 }

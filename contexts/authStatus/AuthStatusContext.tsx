@@ -1,7 +1,7 @@
 "use client";
 
 import { useInjection } from "@/injection/Injection";
-import createAuthStatusLogic from "@/logic/authStatusLogic";
+import AuthStatusLogic from "@/logic/AuthStatusLogic";
 import React, { useContext, useEffect, useReducer } from "react";
 import AuthStatusAction, {
   AuthStatusAuthorizeAction,
@@ -14,12 +14,12 @@ import AuthStatusState, {
 
 type AuthStatusContextType = {
   state: AuthStatusState;
-  updateAuthStatus: ((status: AuthStatusState) => void) | undefined;
+  authStatusLogic: AuthStatusLogic | undefined;
 };
 
 const AuthStatusContext = React.createContext<AuthStatusContextType>({
-  state: false,
-  updateAuthStatus: undefined,
+  state: new AuthStatusUnauthorizedState(),
+  authStatusLogic: undefined,
 });
 
 function reducer(state: AuthStatusState, action: AuthStatusAction) {
@@ -45,7 +45,7 @@ export default function AuthStatusProvider({
 
   const { authRepo } = useInjection();
 
-  const updateAuthStatus = createAuthStatusLogic(dispatch);
+  const authStatusLogic = new AuthStatusLogic(authRepo, dispatch);
 
   useEffect(() => {
     const isSignedIn = authRepo.isSignedIn();
@@ -56,7 +56,7 @@ export default function AuthStatusProvider({
   }, []);
 
   return (
-    <AuthStatusContext.Provider value={{ state, updateAuthStatus }}>
+    <AuthStatusContext.Provider value={{ state, authStatusLogic }}>
       {children}
     </AuthStatusContext.Provider>
   );

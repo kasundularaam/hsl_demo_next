@@ -5,7 +5,7 @@ import AuthRepo from "@/repositories/AuthRepo";
 import AuthService from "@/services/AuthService";
 import React, { useContext, useEffect, useState } from "react";
 
-export enum ENVIRONMENT {
+enum ENVIRONMENT {
   DEV = "development",
   PROD = "production",
   TEST = "testing",

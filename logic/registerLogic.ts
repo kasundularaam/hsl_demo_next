@@ -5,21 +5,30 @@ import RegisterAction, {
 } from "@/contexts/registerContext/RegisterAction";
 import IAuthRepo from "@/domain/auth/IAuthRepo";
 
-export default function createRegisterLogic(
-  authRepo: IAuthRepo,
-  dispatch: React.Dispatch<RegisterAction>
-) {
-  return async function registerUser(
+export default class RegisterLogic {
+  authRepo: IAuthRepo;
+  dispatch: React.Dispatch<RegisterAction>;
+
+  constructor(authRepo: IAuthRepo, dispatch: React.Dispatch<RegisterAction>) {
+    this.authRepo = authRepo;
+    this.dispatch = dispatch;
+  }
+
+  async registerUser(
     name: string,
     email: string,
     password: string
   ): Promise<void> {
     try {
-      dispatch(new RegisterStartedAction(name, email, password));
-      const user = await authRepo.registerUser(name, email, password);
-      dispatch(new RegisterSucceedAction(user));
+      this.dispatch(new RegisterStartedAction(name, email, password));
+      const { user, token } = await this.authRepo.registerUser(
+        name,
+        email,
+        password
+      );
+      this.dispatch(new RegisterSucceedAction(user, token));
     } catch (error) {
-      dispatch(new RegisterFailedAction(`${error}`));
+      this.dispatch(new RegisterFailedAction(`${error}`));
     }
-  };
+  }
 }

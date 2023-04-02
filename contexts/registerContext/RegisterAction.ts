@@ -18,9 +18,11 @@ export class RegisterLoadingAction extends RegisterAction {}
 
 export class RegisterSucceedAction extends RegisterAction {
   user: User;
-  constructor(user: User) {
+  token: string;
+  constructor(user: User, token: string) {
     super();
     this.user = user;
+    this.token = token;
   }
 }
 

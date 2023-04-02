@@ -1,7 +1,7 @@
 "use client";
 
 import { useInjection } from "@/injection/Injection";
-import createRegisterLogic from "@/logic/registerLogic";
+import RegisterLogic from "@/logic/registerLogic";
 import React, { useContext, useReducer } from "react";
 import RegisterAction, {
   RegisterFailedAction,
@@ -17,14 +17,12 @@ import RegisterState, {
 
 type RegisterContextType = {
   state: RegisterState;
-  registerUser:
-    | ((name: string, email: string, password: string) => Promise<void>)
-    | undefined;
+  registerLogic: RegisterLogic | undefined;
 };
 
 const RegisterContext = React.createContext<RegisterContextType>({
   state: new RegisterInitState(),
-  registerUser: undefined,
+  registerLogic: undefined,
 });
 
 function reducer(state: RegisterState, action: RegisterAction) {
@@ -32,7 +30,7 @@ function reducer(state: RegisterState, action: RegisterAction) {
     return new RegisterLoadingState();
   }
   if (action instanceof RegisterSucceedAction) {
-    return new RegisterSucceedState(action.user);
+    return new RegisterSucceedState(action.user, action.token);
   }
   if (action instanceof RegisterFailedAction) {
     return new RegisterFailedState(action.errorMessage);
@@ -53,10 +51,10 @@ export default function RegisterProvider({
 
   const { authRepo } = useInjection();
 
-  const registerUser = createRegisterLogic(authRepo, dispatch);
+  const registerLogic = new RegisterLogic(authRepo, dispatch);
 
   return (
-    <RegisterContext.Provider value={{ state, registerUser }}>
+    <RegisterContext.Provider value={{ state, registerLogic }}>
       {children}
     </RegisterContext.Provider>
   );

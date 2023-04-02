@@ -6,9 +6,11 @@ export class RegisterInitState extends RegisterState {}
 export class RegisterLoadingState extends RegisterState {}
 export class RegisterSucceedState extends RegisterState {
   user: User;
-  constructor(user: User) {
+  token: string;
+  constructor(user: User, token: string) {
     super();
     this.user = user;
+    this.token = token;
   }
 }
 export class RegisterFailedState extends RegisterState {

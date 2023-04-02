@@ -26,19 +26,25 @@ export default class AuthService {
   };
 
   loginUser = asyncWrapper(
-    async (email: string, password: string): Promise<User> => {
+    async (
+      email: string,
+      password: string
+    ): Promise<{ user: User; token: string }> => {
       const res = await axios.post(`${url}/login`, {
         email: email,
         password: password,
       });
       const { user, token } = res.data;
-      saveTokenAndIdUid(token, user._id);
-      return user;
+      return { user, token };
     }
   );
 
   registerUser = asyncWrapper(
-    async (name: string, email: string, password: string): Promise<User> => {
+    async (
+      name: string,
+      email: string,
+      password: string
+    ): Promise<{ user: User; token: string }> => {
       const res = await axios.post(`${url}/register`, {
         name: name,
         email: email,
@@ -46,8 +52,7 @@ export default class AuthService {
       });
 
       const { user, token } = res.data;
-      saveTokenAndIdUid(token, user._id);
-      return user;
+      return { user, token };
     }
   );
 
@@ -57,7 +62,11 @@ export default class AuthService {
     return user;
   });
 
-  signOutUser = () => {
+  removeUser = () => {
     destroySavedUser();
+  };
+
+  saveUser = (token: string, uid: string) => {
+    saveTokenAndIdUid(token, uid);
   };
 }

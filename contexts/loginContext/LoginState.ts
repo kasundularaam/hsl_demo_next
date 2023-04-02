@@ -6,9 +6,11 @@ export class LoginInitState extends LoginState {}
 export class LoginLoadingState extends LoginState {}
 export class LoginSucceedState extends LoginState {
   user: User;
-  constructor(user: User) {
+  token: string;
+  constructor(user: User, token: string) {
     super();
     this.user = user;
+    this.token = token;
   }
 }
 export class LoginFailedState extends LoginState {

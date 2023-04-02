@@ -16,9 +16,11 @@ export class LoginLoadingAction extends LoginAction {}
 
 export class LoginSucceedAction extends LoginAction {
   user: User;
-  constructor(user: User) {
+  token: string;
+  constructor(user: User, token: string) {
     super();
     this.user = user;
+    this.token = token;
   }
 }
 
