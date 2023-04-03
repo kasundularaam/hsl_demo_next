@@ -23,8 +23,7 @@ export default function LoginPage() {
   const router = useRouter();
   useEffect(() => {
     if (state instanceof LoginSucceedState) {
-      if (authStatusLogic === undefined) return;
-      authStatusLogic.saveNewUser(state.token, state.user._id);
+      authStatusLogic?.saveNewUser(state.token, state.user._id);
       router.replace("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

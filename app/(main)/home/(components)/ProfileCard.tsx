@@ -13,8 +13,7 @@ export default function ProfileCard() {
   const { state, profileCardLogic } = useProfileCard();
 
   useEffect(() => {
-    if (profileCardLogic === undefined) return;
-    profileCardLogic.loadProfileCard();
+    profileCardLogic?.loadProfileCard();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

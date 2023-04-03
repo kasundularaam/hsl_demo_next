@@ -2,7 +2,7 @@
 
 import { useInjection } from "@/injection/Injection";
 import AuthStatusLogic from "@/logic/AuthStatusLogic";
-import React, { useContext, useEffect, useReducer } from "react";
+import React, { useContext, useReducer } from "react";
 import AuthStatusAction, {
   AuthStatusAuthorizeAction,
   AuthStatusUnauthorizeAction,
@@ -49,14 +49,6 @@ export default function AuthStatusProvider({
   const { authRepo } = useInjection();
 
   const authStatusLogic = new AuthStatusLogic(authRepo, dispatch);
-
-  useEffect(() => {
-    const isSignedIn = authRepo.isSignedIn();
-    if (isSignedIn) {
-      dispatch(new AuthStatusAuthorizeAction());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <AuthStatusContext.Provider value={{ state, authStatusLogic }}>

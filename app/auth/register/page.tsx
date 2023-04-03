@@ -21,8 +21,7 @@ export default function RegisterPage() {
   const router = useRouter();
   useEffect(() => {
     if (state instanceof RegisterSucceedState) {
-      if (authStatusLogic === undefined) return;
-      authStatusLogic.saveNewUser(state.token, state.user._id);
+      authStatusLogic?.saveNewUser(state.token, state.user._id);
       router.replace("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

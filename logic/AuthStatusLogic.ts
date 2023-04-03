@@ -13,6 +13,15 @@ export default class AuthStatusLogic {
     this.dispatch = dispatch;
   }
 
+  loadAuthStatus() {
+    const isSignedIn = this.authRepo.isSignedIn();
+    if (isSignedIn) {
+      this.dispatch(new AuthStatusAuthorizeAction());
+    } else {
+      this.dispatch(new AuthStatusUnauthorizeAction());
+    }
+  }
+
   saveNewUser(token: string, uid: string): void {
     this.authRepo.saveUser(token, uid);
     this.dispatch(new AuthStatusAuthorizeAction());

@@ -9,9 +9,10 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Home() {
-  const { state } = useAuthStatus();
+  const { state, authStatusLogic } = useAuthStatus();
   const router = useRouter();
   useEffect(() => {
+    authStatusLogic?.loadAuthStatus();
     setTimeout(() => {
       if (state instanceof AuthStatusAuthorizedState) {
         router.replace("/home");
@@ -20,7 +21,8 @@ export default function Home() {
         router.replace("/auth/login");
       }
     }, 2000);
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <main className="h-screen flex">

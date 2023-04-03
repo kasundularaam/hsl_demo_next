@@ -4,7 +4,7 @@ import { useAuthStatus } from "@/contexts/authStatus/AuthStatusContext";
 import { AuthStatusAuthorizedState } from "@/contexts/authStatus/AuthStatusState";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function SignOutButton() {
   const { state, authStatusLogic } = useAuthStatus();
@@ -12,10 +12,14 @@ export default function SignOutButton() {
   const router = useRouter();
 
   const signOut = () => {
-    if (authStatusLogic === undefined) return;
-    authStatusLogic.removeExistingUser();
+    authStatusLogic?.removeExistingUser();
     router.replace("/");
   };
+
+  useEffect(() => {
+    authStatusLogic?.loadAuthStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
