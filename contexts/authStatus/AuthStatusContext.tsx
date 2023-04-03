@@ -41,7 +41,10 @@ export default function AuthStatusProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [state, dispatch] = useReducer(reducer, false);
+  const [state, dispatch] = useReducer(
+    reducer,
+    new AuthStatusUnauthorizedState()
+  );
 
   const { authRepo } = useInjection();
 

@@ -23,7 +23,7 @@ export default class ProfileCardLogic {
       const user = await this.authRepo.getUserById(uid);
       this.dispatch(new ProfileCardLoadedAction(user));
     } catch (error) {
-      this.dispatch(new ProfileCardFailedAction(error));
+      this.dispatch(new ProfileCardFailedAction(`${error}`));
     }
   }
 }

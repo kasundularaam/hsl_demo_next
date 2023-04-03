@@ -1,3 +1,5 @@
+"use client";
+
 import { useInjection } from "@/injection/Injection";
 import ProfileCardLogic from "@/logic/ProfileCardLogic";
 import React, { useContext, useReducer } from "react";
