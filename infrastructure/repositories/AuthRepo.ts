@@ -1,6 +1,6 @@
 import IAuthRepo from "@/domain/auth/IAuthRepo";
 import { User } from "@/domain/auth/User";
-import AuthService from "@/services/AuthService";
+import AuthService from "@/infrastructure/services/AuthService";
 
 export default class AuthRepo implements IAuthRepo {
   authService: AuthService;

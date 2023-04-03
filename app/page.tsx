@@ -1,10 +1,10 @@
 "use client";
 
-import { useAuthStatus } from "@/contexts/authStatus/AuthStatusContext";
+import { useAuthStatus } from "@/logic/authStatusLogic/AuthStatusContext";
 import {
   AuthStatusAuthorizedState,
   AuthStatusUnauthorizedState,
-} from "@/contexts/authStatus/AuthStatusState";
+} from "@/logic/authStatusLogic/AuthStatusState";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 

@@ -1,12 +1,12 @@
 "use client";
 
-import { useAuthStatus } from "@/contexts/authStatus/AuthStatusContext";
-import { useRegister } from "@/contexts/registerContext/RegisterContext";
+import { useAuthStatus } from "@/logic/authStatusLogic/AuthStatusContext";
+import { useRegister } from "@/logic/registerLogic/RegisterContext";
 import {
   RegisterFailedState,
   RegisterLoadingState,
   RegisterSucceedState,
-} from "@/contexts/registerContext/RegisterState";
+} from "@/logic/registerLogic/RegisterState";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

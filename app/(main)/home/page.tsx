@@ -1,4 +1,4 @@
-import ProfileCardProvider from "@/contexts/profileCardContext/ProfileCardContext";
+import ProfileCardProvider from "@/logic/profileCardLogic/ProfileCardContext";
 import ProfileCard from "./(components)/ProfileCard";
 
 export default function Home() {

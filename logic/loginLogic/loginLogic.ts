@@ -2,7 +2,7 @@ import LoginAction, {
   LoginFailedAction,
   LoginStartedAction,
   LoginSucceedAction,
-} from "@/contexts/loginContext/LoginAction";
+} from "@/logic/loginLogic/LoginAction";
 import IAuthRepo from "@/domain/auth/IAuthRepo";
 
 export default class LoginLogic {

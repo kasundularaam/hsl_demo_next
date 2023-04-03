@@ -1,7 +1,7 @@
 "use client";
 
 import { useInjection } from "@/injection/Injection";
-import RegisterLogic from "@/logic/registerLogic";
+import RegisterLogic from "./registerLogic";
 import React, { useContext, useReducer } from "react";
 import RegisterAction, {
   RegisterFailedAction,

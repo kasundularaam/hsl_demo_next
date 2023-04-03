@@ -1,8 +1,8 @@
 "use client";
 
 import IAuthRepo from "@/domain/auth/IAuthRepo";
-import AuthRepo from "@/repositories/AuthRepo";
-import AuthService from "@/services/AuthService";
+import AuthRepo from "@/infrastructure/repositories/AuthRepo";
+import AuthService from "@/infrastructure/services/AuthService";
 import React, { useContext, useEffect, useState } from "react";
 
 enum ENVIRONMENT {

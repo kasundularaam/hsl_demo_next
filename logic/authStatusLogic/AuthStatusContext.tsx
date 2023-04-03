@@ -1,12 +1,12 @@
 "use client";
 
 import { useInjection } from "@/injection/Injection";
-import AuthStatusLogic from "@/logic/AuthStatusLogic";
 import React, { useContext, useReducer } from "react";
 import AuthStatusAction, {
   AuthStatusAuthorizeAction,
   AuthStatusUnauthorizeAction,
 } from "./AuthStatusAction";
+import AuthStatusLogic from "./AuthStatusLogic";
 import AuthStatusState, {
   AuthStatusAuthorizedState,
   AuthStatusUnauthorizedState,

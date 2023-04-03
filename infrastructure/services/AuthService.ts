@@ -1,11 +1,11 @@
 import { User } from "@/domain/auth/User";
-import asyncWrapper from "@/utils/asyncWrapper";
+import asyncWrapper from "@/core/utils/asyncWrapper";
 import {
   destroySavedUser,
   getSavedAuthToken,
   getSavedUid,
   saveTokenAndIdUid,
-} from "@/utils/authCookiesHelper";
+} from "@/core/utils/authCookiesHelper";
 import axios from "axios";
 
 const url = "http://localhost:8000/api/v1/users";

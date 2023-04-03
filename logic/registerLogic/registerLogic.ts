@@ -2,7 +2,7 @@ import RegisterAction, {
   RegisterFailedAction,
   RegisterStartedAction,
   RegisterSucceedAction,
-} from "@/contexts/registerContext/RegisterAction";
+} from "@/logic/registerLogic/RegisterAction";
 import IAuthRepo from "@/domain/auth/IAuthRepo";
 
 export default class RegisterLogic {

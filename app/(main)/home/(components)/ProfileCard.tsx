@@ -1,12 +1,12 @@
 "use client";
 
-import { useProfileCard } from "@/contexts/profileCardContext/ProfileCardContext";
+import { useProfileCard } from "@/logic/profileCardLogic/ProfileCardContext";
 import {
   ProfileCardFailedState,
   ProfileCardInitState,
   ProfileCardLoadedState,
   ProfileCardLoadingState,
-} from "@/contexts/profileCardContext/ProfileCardState";
+} from "@/logic/profileCardLogic/ProfileCardState";
 import React, { useEffect } from "react";
 
 export default function ProfileCard() {

@@ -7,14 +7,14 @@ import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 import Link from "next/link";
 import { LoginData } from "../(componentProps)/FormDataProps";
-import { useLogin } from "@/contexts/loginContext/LoginContext";
+import { useEffect } from "react";
+import { useAuthStatus } from "@/logic/authStatusLogic/AuthStatusContext";
+import { useLogin } from "@/logic/loginLogic/LoginContext";
 import {
   LoginFailedState,
   LoginLoadingState,
   LoginSucceedState,
-} from "@/contexts/loginContext/LoginState";
-import { useAuthStatus } from "@/contexts/authStatus/AuthStatusContext";
-import { useEffect } from "react";
+} from "@/logic/loginLogic/LoginState";
 
 export default function LoginPage() {
   const { state, loginLogic } = useLogin();

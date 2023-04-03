@@ -1,7 +1,7 @@
 import AuthStatusAction, {
   AuthStatusAuthorizeAction,
   AuthStatusUnauthorizeAction,
-} from "@/contexts/authStatus/AuthStatusAction";
+} from "./AuthStatusAction";
 import IAuthRepo from "@/domain/auth/IAuthRepo";
 
 export default class AuthStatusLogic {

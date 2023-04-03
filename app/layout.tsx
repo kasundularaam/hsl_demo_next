@@ -1,6 +1,6 @@
 import "./globals.css";
 import InjectionProvider from "@/injection/Injection";
-import AuthStatusProvider from "@/contexts/authStatus/AuthStatusContext";
+import AuthStatusProvider from "@/logic/authStatusLogic/AuthStatusContext";
 
 export const metadata = {
   title: "Create Next App",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useInjection } from "@/injection/Injection";
-import LoginLogic from "@/logic/loginLogic";
+import LoginLogic from "./loginLogic";
 import React, { useContext, useReducer } from "react";
 import LoginAction, {
   LoginFailedAction,

@@ -1,5 +1,5 @@
-import LoginProvider from "@/contexts/loginContext/LoginContext";
-import RegisterProvider from "@/contexts/registerContext/RegisterContext";
+import LoginProvider from "@/logic/loginLogic/LoginContext";
+import RegisterProvider from "@/logic/registerLogic/RegisterContext";
 
 export const metadata = {
   title: "Authentication",

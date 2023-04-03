@@ -1,7 +1,7 @@
 "use client";
 
-import { useAuthStatus } from "@/contexts/authStatus/AuthStatusContext";
-import { AuthStatusAuthorizedState } from "@/contexts/authStatus/AuthStatusState";
+import { useAuthStatus } from "@/logic/authStatusLogic/AuthStatusContext";
+import { AuthStatusAuthorizedState } from "@/logic/authStatusLogic/AuthStatusState";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";

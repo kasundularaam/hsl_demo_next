@@ -2,7 +2,7 @@ import ProfileCardAction, {
   ProfileCardFailedAction,
   ProfileCardLoadAction,
   ProfileCardLoadedAction,
-} from "@/contexts/profileCardContext/ProfileCardAction";
+} from "@/logic/profileCardLogic/ProfileCardAction";
 import IAuthRepo from "@/domain/auth/IAuthRepo";
 
 export default class ProfileCardLogic {
