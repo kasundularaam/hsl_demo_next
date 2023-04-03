@@ -4,6 +4,7 @@ import { useAuthStatus } from "@/logic/authStatusLogic/AuthStatusContext";
 import {
   AuthStatusAuthorizedState,
   AuthStatusUnauthorizedState,
+  AuthStatusUnknownState,
 } from "@/logic/authStatusLogic/AuthStatusState";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -11,8 +12,13 @@ import { useEffect } from "react";
 export default function Home() {
   const { state, authStatusLogic } = useAuthStatus();
   const router = useRouter();
+
   useEffect(() => {
     authStatusLogic?.loadAuthStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     setTimeout(() => {
       if (state instanceof AuthStatusAuthorizedState) {
         router.replace("/home");
@@ -22,7 +28,7 @@ export default function Home() {
       }
     }, 2000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [state]);
 
   return (
     <main className="h-screen flex">

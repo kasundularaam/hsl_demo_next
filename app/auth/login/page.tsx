@@ -30,8 +30,7 @@ export default function LoginPage() {
   }, [state]);
 
   function login(data: LoginData) {
-    if (loginLogic === undefined) return;
-    loginLogic.loginUser(data.email, data.password);
+    loginLogic?.loginUser(data.email, data.password);
   }
 
   return (

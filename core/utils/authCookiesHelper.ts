@@ -14,6 +14,8 @@ export const getSavedUid = () => {
 };
 
 export const saveTokenAndIdUid = (token: string, uid: string) => {
+  console.log("UID = ", uid, "TOKEN = ", token);
+
   saveAuthToken(token);
   saveUid(uid);
 };

@@ -10,6 +10,7 @@ import AuthStatusLogic from "./AuthStatusLogic";
 import AuthStatusState, {
   AuthStatusAuthorizedState,
   AuthStatusUnauthorizedState,
+  AuthStatusUnknownState,
 } from "./AuthStatusState";
 
 type AuthStatusContextType = {
@@ -18,7 +19,7 @@ type AuthStatusContextType = {
 };
 
 const AuthStatusContext = React.createContext<AuthStatusContextType>({
-  state: new AuthStatusUnauthorizedState(),
+  state: new AuthStatusUnknownState(),
   authStatusLogic: undefined,
 });
 
@@ -29,7 +30,7 @@ function reducer(state: AuthStatusState, action: AuthStatusAction) {
   if (action instanceof AuthStatusUnauthorizeAction) {
     return new AuthStatusUnauthorizedState();
   }
-  return new AuthStatusUnauthorizedState();
+  return new AuthStatusUnknownState();
 }
 
 export function useAuthStatus() {
@@ -41,10 +42,7 @@ export default function AuthStatusProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [state, dispatch] = useReducer(
-    reducer,
-    new AuthStatusUnauthorizedState()
-  );
+  const [state, dispatch] = useReducer(reducer, new AuthStatusUnknownState());
 
   const { authRepo } = useInjection();
 
