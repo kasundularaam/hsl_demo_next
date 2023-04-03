@@ -11,11 +11,9 @@ export default async function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
-        <NavBar />
-        {children}
-      </body>
-    </html>
+    <>
+      <NavBar />
+      {children}
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import "./globals.css";
-import InjectionProvider, { ENVIRONMENT } from "@/injection/Injection";
+import InjectionProvider from "@/injection/Injection";
 import AuthStatusProvider from "@/contexts/authStatus/AuthStatusContext";
 
 export const metadata = {
